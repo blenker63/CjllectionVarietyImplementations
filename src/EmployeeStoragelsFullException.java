@@ -1,5 +1,5 @@
-public class EmployeeStoragelsFullException extends RuntimeException{
-        public EmployeeStoragelsFullException(String massage) {
-            super(massage);
-        }
+public class EmployeeStoragelsFullException extends RuntimeException {
+    public EmployeeStoragelsFullException(String massage) {
+        super(massage);
+    }
 }
