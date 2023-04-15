@@ -6,10 +6,10 @@ public class Employee {
     private String surname;
     private String name;
     private String patronymic;
+    private String fullName;
     private int department;
     private int salary;
     private static int counter = 0;
-//    private int id;
 
 
     public Employee(String surname, String name, String patronymic, int department, int salary) {
@@ -18,9 +18,7 @@ public class Employee {
         this.patronymic = patronymic;
         this.department = department;
         this.salary = salary;
-//        this.id = ++counter;
-//        System.out.println(counter); // проверка счетчика
-//        System.out.println(id); // проверка id
+        this.fullName = getSurname() + getName() + getPatronymic();
     }
 
     public String getSurname() {
@@ -35,6 +33,10 @@ public class Employee {
         return this.patronymic;
     }
 
+    public String getFullName() {
+        return this.fullName;
+    }
+
     public int getDepartment() {
         return this.department;
     }
@@ -43,30 +45,18 @@ public class Employee {
         return this.salary;
     }
 
-//    public int getId() {
-//        return this.id;
-//    }
-
-//    public void setDepartment(int department) {
-//        this.department = department;
-//    }
-
-//    public void setSalary(int salary) {
-//        this.salary = salary;
-//    }
-
     @Override
     public String toString() {
         return //"id: " + getId() + "  " +
                 "ФИО: '" + getSurname() + '\''
-                + getName() + '\''
-                + getPatronymic() + '\'' +
-                ", отдел - " + getDepartment() +
-                ", зарплата, рублей - " + getSalary() //+ ", id - " + getId() + ", counter - " + counter
-                + ";";
+                        + getName() + '\''
+                        + getPatronymic() + '\'' +
+                        ", отдел - " + getDepartment() +
+                        ", зарплата, рублей - " + getSalary() //+ ", id - " + getId() + ", counter - " + counter
+                        + ";";
     }
 
-    }
+}
 
 
 

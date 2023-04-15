@@ -1,93 +1,105 @@
 import java.util.*;
 
 public class EmployeeManagement {
-    private Employee[] employees;
-//    private int size;
     private static int counter = 0;
-//    private int id;
-    private String employeeIndex;
+    private int number = 10;
 
-    public EmployeeManagement() {
-        this.employees = new Employee[10]; // объявление длины массива
+    private final Map<String, Employee> employeeData = new HashMap<>();
+
+    public void addEmployee(Employee employee) {
+
+        if (counter >= number) {
+            throw new EmployeeStoragelsFullException("Список переполнен");
+        }
+        if (employeeData.containsKey(employee.getFullName())) {
+            throw new EmployeeAlreadyAddedException(employee.getFullName() + " - такой сотрудник уже есть");
+
+        }
+        employeeData.put(employee.getFullName(), employee);
+        counter++;
+        System.out.println("Добавлен сотрудник - " + employee);
+    }
+
+    public Employee removeEmployee(String surname, String name, String patronymic) {
+        var kay = surname + name + patronymic;
+        var resultRemove = employeeData.remove(kay);
+        if (resultRemove == null) {
+            throw new EmployeeNotFoundException(kay + " - Сотрудник не найден");
+        }
+        System.out.println("Сотрудник удален - " + resultRemove);
+        return resultRemove;
+    }
+
+    public Employee getEmployee(String surname, String name, String patronymic) {
+        var kay = surname + name + patronymic;
+        var resultGet = employeeData.get(kay);
+        if (resultGet == null) {
+            throw new EmployeeNotFoundException(kay + " - Сотрудник не найден");
+        }
+        System.out.println("Сотрудник найден -  " + resultGet);
+        return resultGet;
     }
 
 
-    public void addEmployee(String surname, String name, String patronymic, int department, int salary) {
-        if (counter >= employees.length) {
-            System.out.println("Нельзя добавить сотрудника, закончилось место");
+    public void printAllEmployee() {
+        for (Employee value : employeeData.values()) {
+            System.out.println(value);
         }
-        Employee newEmployee = new Employee(surname, name, patronymic, department, salary);
-        employees[counter++] = newEmployee;
     }
 
-    public void person() {
-        Map<String, Employee> employeeData = new HashMap<>();
-        for (int i = 0; i < counter; i++) {
-            employeeIndex =
-                    employees[i].getSurname() + employees[i].getName() + employees[i].getPatronymic();
-            employeeData.put(employeeIndex, employees[i]);
-        }
-            System.out.println(employeeData);
+    public int getCurrentSize() {
+        return counter;
+    }
 
+    public int sumSalary() {
+        int sumSalary = 0;
+        for (Employee value : employeeData.values()) {
+            sumSalary = sumSalary + value.getSalary();
+//            return sumSalary;
+        }
+        return sumSalary;
+    }
+
+    public void employeeMaxSalary() {
+        int maxSalaryMonth = 0;
+        String personMaxSalary = null;
+        for (Employee value : employeeData.values()) {
+            if (value.getSalary() > maxSalaryMonth) {
+                maxSalaryMonth = value.getSalary();
+                personMaxSalary = value.getFullName();
+            }
+        }
+        System.out.println("Сотрудник с самой высокой з/платой: " + personMaxSalary + " " + maxSalaryMonth + " рублей");
+    }
+
+    public void employeeMinSalary() {
+        int minSalaryMonth = 1_000_000;
+        String personMinSalary = null;
+        Employee employeeMinSalary = null;
+        for (Employee value : employeeData.values()) {
+            if (value.getSalary() < minSalaryMonth) {
+                minSalaryMonth = value.getSalary();
+                personMinSalary = value.getFullName();
+            }
+        }
+        System.out.println("Сотрудник с самой низкой з/платой: " + personMinSalary + " " + minSalaryMonth + " рублей");
+    }
+
+    public String averageSalary() {
+        float average = (float) sumSalary() / counter;
+        String averageSalary = String.format("%.2f", average);
+        return averageSalary;
+    }
+
+    public void employeeList() {
+        int id = 0;
+        for (Employee value : employeeData.values()) {
+            id++;
+            System.out.println("№ п/п " + id + "  " + value.getSurname() + "  " + value.getName() + "  "
+                    + value.getPatronymic() + ";");
+        }
     }
 }
 
-//    public void printAllEmployee() {
-//        for (int i = 0; i < counter; i++) {
-//            Employee employee = employees[i];
-//            System.out.println(employee);
-//        }
-//    }
-//    public int getCurrentSize() {
-//        return counter;
-//    }
-//    public int sumSalary() {
-//        int sumSalary = 0;
-//        for (int i = 0; i < counter; i++) {
-//            Employee employee = employees[i];
-//            sumSalary = sumSalary + employees[i].getSalary();
-//        }
-//        return  sumSalary;
-//    }
-//    public void employeeMaxSalary() {
-//        int maxSalaryMonth = 0;
-//        int idMaxSalary  = 0;
-//        Employee employeeMaxSalary = null;
-//        for (int i = 0; i < counter; i++) {
-//            if (employees[i].getSalary() > maxSalaryMonth) {
-//                maxSalaryMonth = employees[i].getSalary();
-//                idMaxSalary = employees[i].getId();
-//            }
-//        }
-//        employeeMaxSalary  = employees[idMaxSalary - 1];
-//        System.out.println("Сотрудник с самой высокой з/платой: " +  employeeMaxSalary);
-//    }
-//
-//    public void employeeMinSalary () {
-//        int minSalaryMonth = 1_000_000;
-//        int idMinSalary  = 0;
-//        Employee employeeMinSalary = null;
-//        for (int i = 0; i < counter; i++) {
-//            if (employees[i].getSalary() < minSalaryMonth) {
-//                minSalaryMonth = employees[i].getSalary();
-//                idMinSalary = employees[i].getId();
-//            }
-//        }
-//        employeeMinSalary = employees[idMinSalary - 1];
-//        System.out.println("Сотрудник с самой низкой з/платой: " + employeeMinSalary);
-//    }
-//    public String averageSalary() {
-//        float average  =  (float) sumSalary() / counter ;
-//        String averageSalary = String.format("%.2f", average);
-//        return averageSalary;
-//    }
-//    public void employeeList() {
-//        for (int i = 0; i < counter; i++) {
-//            Employee employee = employees[i];
-//
-//            System.out.println("№ п/п " + employees[i].getId() + "    " + employees[i].getSurname() + " "
-//                    +  employees[i].getName() + " " + employees[i].getPatronymic() + ";");
-//        }
-//    }
 
 
